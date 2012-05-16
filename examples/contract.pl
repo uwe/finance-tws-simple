@@ -16,14 +16,16 @@ my $tws = Finance::TWS::Simple->new(
     port => $ENV{TWS_PORT},
 );
 
-my $contract = Protocol::TWS::Struct::Contract->new(
-    symbol      => 'EUR',
-    secType     => 'CASH',
-    exchange    => 'IDEALPRO',
-    localSymbol => 'EUR.USD',
+my $contract = $tws->struct(
+    Contract => {
+        symbol      => 'EUR',
+        secType     => 'CASH',
+        exchange    => 'IDEALPRO',
+        localSymbol => 'EUR.USD',
+    },
 );
 
-my @details = $tws->contract_details($contract);
+my $details = $tws->contract_details($contract);
 
-warn Dumper \@details;
+warn Dumper $details;
 
