@@ -3,7 +3,7 @@ package Finance::TWS::Simple::ContractDetails;
 use strict;
 use warnings;
 
-sub new {
+sub call {
     my ($class, $tws, $cv, $arg) = @_;
 
     my $self = bless {
@@ -18,9 +18,7 @@ sub new {
         },
     );
 
-    $tws->ae_call($request, sub { $self->cb(shift) });
-
-    return $self;
+    $tws->ae_call($self, $request);
 }
 
 sub cb {

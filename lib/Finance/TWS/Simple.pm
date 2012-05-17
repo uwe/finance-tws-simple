@@ -18,8 +18,13 @@ sub new {
     return $self;
 }
 
-sub ae_call { (shift)->{tws}->call(@_) }
 sub next_id { (shift)->{tws}->next_valid_id }
+
+sub ae_call {
+   my ($self, $object, $request) = @_;
+
+   $self->{tws}->call($request, sub { $object->cb(shift) });
+}
 
 sub call {
     my ($self, $name, $arg) = @_;
@@ -27,7 +32,7 @@ sub call {
     my $cv    = AE::cv;
     my $class = 'Finance::TWS::Simple::' . $name;
     eval "use $class"; die $@ if $@;
-    $class->new($self, $cv, $arg);
+    $class->call($self, $cv, $arg);
 
     return $cv->recv;
 }

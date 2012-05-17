@@ -6,7 +6,7 @@ use warnings;
 use Carp qw/croak/;
 use DateTime;
 
-sub new {
+sub call {
     my ($class, $tws, $cv, $arg) = @_;
 
     # Parameter
@@ -37,9 +37,7 @@ sub new {
         cv => $cv,
     }, $class;
 
-    $tws->ae_call($request, sub { $self->cb(shift) });
-
-    return $self;
+    $tws->ae_call($self, $request);
 }
 
 sub cb {
