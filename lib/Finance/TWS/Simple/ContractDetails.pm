@@ -3,28 +3,24 @@ package Finance::TWS::Simple::ContractDetails;
 use strict;
 use warnings;
 
-use AnyEvent;
-
-sub name { 'contract_details' }
-
 sub new {
-    my ($class, $tws, $contract) = @_;
+    my ($class, $tws, $cv, $arg) = @_;
 
     my $self = bless {
-        cv      => AE::cv,
+        cv      => $cv,
         results => [],
     }, $class;
 
     my $request = $tws->request(
         reqContractDetails => {
-            id       => $tws->{next_id}++,
-            contract => $contract,
+            id       => $tws->next_id,
+            contract => $arg->{contract},
         },
     );
 
-    $tws->{tws}->call($request, sub { $self->cb(shift) });
+    $tws->ae_call($request, sub { $self->cb(shift) });
 
-    return $self->{cv};
+    return $self;
 }
 
 sub cb {

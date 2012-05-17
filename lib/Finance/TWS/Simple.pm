@@ -3,14 +3,8 @@ package Finance::TWS::Simple;
 use strict;
 use warnings;
 
-use Module::Find qw/useall/;
 use AnyEvent;
 use AnyEvent::TWS;
-use Protocol::TWS;
-
-my @CALLS = useall 'Finance::TWS::Simple';
-###TODO### generate methods
-
 
 sub new {
     my ($class, %arg) = @_;
@@ -21,23 +15,28 @@ sub new {
     $self->{tws} = AnyEvent::TWS->new(%arg);
     $self->{tws}->connect->recv;
 
-    ###TODO### move id handling to AnyEvent::TWS
-    $self->{next_id} = 1;
-
     return $self;
 }
 
-sub call {
-    my ($self, $name, @args) = @_;
+sub ae_call { (shift)->{tws}->call(@_) }
+sub next_id { (shift)->{tws}->next_valid_id }
 
+sub call {
+    my ($self, $name, $arg) = @_;
+
+    my $cv    = AE::cv;
     my $class = 'Finance::TWS::Simple::' . $name;
-    return $class->new($self, @args)->recv;
+    eval "use $class"; die $@ if $@;
+    $class->new($self, $cv, $arg);
+
+    return $cv->recv;
 }
 
 sub struct {
     my ($self, $name, $arg) = @_;
 
     my $class = 'Protocol::TWS::Struct::' . $name;
+    eval "use $class"; die $@ if $@;
     return $class->new(%$arg);
 }
 
@@ -45,13 +44,9 @@ sub request {
     my ($self, $name, $arg) = @_;
 
     my $class = 'Protocol::TWS::Request::' . $name;
+    eval "use $class"; die $@ if $@;
     return $class->new(%$arg);
 }
-
-sub contract_details {
-    (shift)->call(ContractDetails => @_);
-}
-
 
 1;
 

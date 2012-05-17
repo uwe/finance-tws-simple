@@ -25,11 +25,28 @@ my $contract = $tws->struct(
     },
 );
 
-my $details = $tws->call(
-    ContractDetails => {
+my $data = $tws->call(
+    HistoricalData => {
         contract => $contract,
+        duration => '2 W',
+        bar_size => '1 day',
+        bar_type => 'BID_ASK',
     },
 );
 
-warn Dumper $details;
+printf(
+    "%-18s | %-7s | %-7s | %-7s | %7s\n",
+    'date', 'open', 'high', 'low', 'close',
+);
+print "-------------------|---------|---------|---------|---------\n";
+foreach my $bar (@$data) {
+    printf(
+        "%-18s | %7.5f | %7.5f | %7.5f | %7.5f\n",
+        $bar->date,
+        $bar->open,
+        $bar->high,
+        $bar->low,
+        $bar->close,
+    );
+}
 
