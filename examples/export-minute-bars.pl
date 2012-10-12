@@ -3,13 +3,17 @@
 use strict;
 use warnings;
 
+use DateTime;
 use FindBin;
+use Text::CSV;
 
 use lib "$FindBin::Bin/../../anyevent-tws/lib";
 use lib "$FindBin::Bin/../../protocol-tws/lib";
 use lib "$FindBin::Bin/../lib";
 use Finance::TWS::Simple;
 
+
+my $csv = Text::CSV->new;
 
 my $tws = Finance::TWS::Simple->new(
     host => $ENV{TWS_HOST} || '127.0.0.1',
@@ -18,35 +22,40 @@ my $tws = Finance::TWS::Simple->new(
 
 my $contract = $tws->struct(
     Contract => {
-        symbol      => 'EUR',
-        secType     => 'CASH',
-        exchange    => 'IDEALPRO',
-        localSymbol => 'EUR.USD',
+        symbol   => 'AAPL',
+        secType  => 'STK',
+        exchange => 'SMART',
+        currency => 'USD',
     },
 );
+
+my $today = DateTime->today->subtract(seconds => 1)->add(days => 1);
+# weekend?
+if ($today->dow > 5) {
+    # make it Friday
+    $today = $today->subtract(days => $today->dow - 5);
+}
 
 my $data = $tws->call(
     HistoricalData => {
         contract => $contract,
-        duration => '2 W',
-        bar_size => '1 day',
-        bar_type => 'BID_ASK',
+        duration => '1 D',
+        bar_size => '1 min',
+        end_date => DateTime->now,
+        bar_type => 'TRADES',
     },
 );
 
-printf(
-    "%-18s | %-7s | %-7s | %-7s | %7s\n",
-    'date', 'open', 'high', 'low', 'close',
-);
-print "-------------------|---------|---------|---------|---------\n";
+$csv->combine(qw/date open high low close/);
+print $csv->string . "\n";
 foreach my $bar (@$data) {
-    printf(
-        "%-18s | %7.5f | %7.5f | %7.5f | %7.5f\n",
+    $csv->combine(
         $bar->date,
         $bar->open,
         $bar->high,
         $bar->low,
         $bar->close,
     );
+    print $csv->string . "\n";
 }
 
