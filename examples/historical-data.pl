@@ -4,16 +4,17 @@ use strict;
 use warnings;
 
 use Data::Dumper;
+use FindBin;
 
-use lib '/home/uwe/repos/anyevent-tws/lib';
-use lib '/home/uwe/repos/protocol-tws/lib';
-use lib '/home/uwe/repos/finance-tws-simple/lib';
+use lib "$FindBin::Bin/../../anyevent-tws/lib";
+use lib "$FindBin::Bin/../../protocol-tws/lib";
+use lib "$FindBin::Bin/../lib";
 use Finance::TWS::Simple;
 
 
 my $tws = Finance::TWS::Simple->new(
-    host => $ENV{TWS_HOST},
-    port => $ENV{TWS_PORT},
+    host => $ENV{TWS_HOST} || '127.0.0.1',
+    port => $ENV{TWS_PORT} || '7496',
 );
 
 my $contract = $tws->struct(
