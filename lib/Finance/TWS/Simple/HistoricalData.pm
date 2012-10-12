@@ -28,7 +28,7 @@ sub call {
             durationStr    => $duration,
             barSizeSetting => $bar_size,
             whatToShow     => $bar_type,
-            useRTH         => $outside_rth ? 1 : 0,
+            useRTH         => $outside_rth ? 0 : 1,
             formatDate     => 1,
         },
     );
