@@ -60,6 +60,10 @@ __END__
 
 =pod
 
+=head1 NAME
+
+Finance::TWS::Simple - simple InteractiveBrokers API (blocking abstraction over AnyEvent::TWS)
+
 =head1 SYNOPSIS
 
   use Data::Dumper;
@@ -138,6 +142,17 @@ method.
 Shortcut for instanciating L<Protocol::TWS::Request> subclasses. First
 parameter name (equals class name), second parameter (hashref) arguments
 to the constructor.
+
+=head1 BUGS AND SUPPORT
+
+Bugs are quite likely, as I did not try all requests/responses. If you find a
+bug, please email me a code example together with a description what you expect
+as result.
+
+If you have any questions or suggestions feel free to email me as well. There
+are a lot of abstractions missing.
+
+Also, if you have any examples that I can include, I would appreciate it.
 
 =head1 SEE ALSO
 

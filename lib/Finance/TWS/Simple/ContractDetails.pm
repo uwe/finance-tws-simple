@@ -38,6 +38,10 @@ __END__
 
 =pod
 
+=head1 NAME
+
+Finance::TWS::Simple::ContractDetails - request contract details
+
 =head1 SYNOPSIS
 
   my $contract = $tws->struct(Contract => {

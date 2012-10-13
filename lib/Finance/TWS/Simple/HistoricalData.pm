@@ -53,6 +53,10 @@ __END__
 
 =pod
 
+=head1 NAME
+
+Finance::TWS::Simple::HistoricalData - request historical quotes
+
 =head1 SYNOPSIS
 
   my $contract = $tws->struct(Contract => {
