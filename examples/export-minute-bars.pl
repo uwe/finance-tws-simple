@@ -13,6 +13,19 @@ use lib "$FindBin::Bin/../lib";
 use Finance::TWS::Simple;
 
 
+my $symbol = $ARGV[0];
+unless ($symbol) {
+    print <<"EOF";
+Usage: perl $0 SYMBOL
+
+ e. g. perl $0 AAPL > apple.csv
+
+Prints a CSV file of 1 minute bars of today.
+EOF
+    exit 1;
+}
+
+
 my $csv = Text::CSV->new;
 
 my $tws = Finance::TWS::Simple->new(
@@ -22,7 +35,7 @@ my $tws = Finance::TWS::Simple->new(
 
 my $contract = $tws->struct(
     Contract => {
-        symbol   => 'AAPL',
+        symbol   => $symbol,
         secType  => 'STK',
         exchange => 'SMART',
         currency => 'USD',
@@ -41,7 +54,7 @@ my $data = $tws->call(
         contract => $contract,
         duration => '1 D',
         bar_size => '1 min',
-        end_date => DateTime->now,
+        end_date => $today,
         bar_type => 'TRADES',
     },
 );
