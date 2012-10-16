@@ -1,16 +1,13 @@
 #!/usr/bin/env perl
 
+# export (CSV) 1 minute bars
+
 use strict;
 use warnings;
 
 use DateTime;
-use FindBin;
-use Text::CSV;
-
-use lib "$FindBin::Bin/../../anyevent-tws/lib";
-use lib "$FindBin::Bin/../../protocol-tws/lib";
-use lib "$FindBin::Bin/../lib";
 use Finance::TWS::Simple;
+use Text::CSV;
 
 
 my $symbol = $ARGV[0];
@@ -52,10 +49,10 @@ if ($today->dow > 5) {
 my $data = $tws->call(
     HistoricalData => {
         contract => $contract,
-        duration => '1 D',
-        bar_size => '1 min',
+        duration => '2 W',
+        bar_size => '1 day',
         end_date => $today,
-        bar_type => 'TRADES',
+        bar_type => 'OPTION_IMPLIED_VOLATILITY',
     },
 );
 

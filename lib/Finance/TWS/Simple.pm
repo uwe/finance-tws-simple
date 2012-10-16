@@ -1,5 +1,7 @@
 package Finance::TWS::Simple;
 
+# ABSTRACT: simple InteractiveBrokers API (blocking abstraction over AnyEvent::TWS)
+
 use strict;
 use warnings;
 
@@ -38,31 +40,12 @@ sub call {
     return $cv->recv;
 }
 
-sub struct {
-    my ($self, $name, $arg) = @_;
-
-    my $class = 'Protocol::TWS::Struct::' . $name;
-    eval "use $class"; die $@ if $@;
-    return $class->new(%$arg);
-}
-
-sub request {
-    my ($self, $name, $arg) = @_;
-
-    my $class = 'Protocol::TWS::Request::' . $name;
-    eval "use $class"; die $@ if $@;
-    return $class->new(%$arg);
-}
+sub struct  { return (shift)->{tws}->struct(@_)  }
+sub request { return (shift)->{tws}->request(@_) }
 
 1;
 
-__END__
-
 =pod
-
-=head1 NAME
-
-Finance::TWS::Simple - simple InteractiveBrokers API (blocking abstraction over AnyEvent::TWS)
 
 =head1 SYNOPSIS
 
@@ -88,13 +71,15 @@ access InteractiveBrokers Traders Workstation (TWS) API.
 
 Use it in simple scripts, e. g. to retrieve historical data.
 
-=head1 METHODS
+=head1 CONSTRUCTOR
 
 =head2 new
 
 Constructor, connects to InteractiveBrokers API. Accepts the same
 parameters as L<AnyEvent::TWS-E<gt>new|AnyEvent::TWS/new>
 (host, port and client_id - all have useful defaults).
+
+=head1 METHODS
 
 =head2 call
 
@@ -159,9 +144,5 @@ Also, if you have any examples that I can include, I would appreciate it.
 L<http://www.interactivebrokers.com/en/p.php?f=programInterface>,
 L<http://www.interactivebrokers.com/php/apiUsersGuide/apiguide.htm#apiguide/c/c.htm>,
 L<Protocol::TWS>, L<AnyEvent::TWS>
-
-=head1 AUTHOR
-
-Uwe Voelker uwe@uwevoelker.de
 
 =cut

@@ -1,5 +1,7 @@
 package Finance::TWS::Simple::HistoricalData;
 
+# ABSTRACT: request historical quotes
+
 use strict;
 use warnings;
 
@@ -48,14 +50,7 @@ sub cb {
 
 1;
 
-
-__END__
-
 =pod
-
-=head1 NAME
-
-Finance::TWS::Simple::HistoricalData - request historical quotes
 
 =head1 SYNOPSIS
 
@@ -137,9 +132,5 @@ L<http://www.interactivebrokers.com/php/apiUsersGuide/apiguide.htm#apiguide/c/co
 L<http://www.interactivebrokers.com/php/apiUsersGuide/apiguide.htm#apiguide/c/reqhistoricaldata.htm>,
 L<Protocol::TWS::Struct::Contract>,
 L<Protocol::TWS::Struct::BarData>
-
-=head1 AUTHOR
-
-Uwe Voelker uwe@uwevoelker.de
 
 =cut

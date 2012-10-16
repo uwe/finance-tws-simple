@@ -1,5 +1,7 @@
 package Finance::TWS::Simple::ContractDetails;
 
+# ABSTRACT: request contract details
+
 use strict;
 use warnings;
 
@@ -34,13 +36,7 @@ sub cb {
 
 1;
 
-__END__
-
 =pod
-
-=head1 NAME
-
-Finance::TWS::Simple::ContractDetails - request contract details
 
 =head1 SYNOPSIS
 
@@ -74,9 +70,5 @@ L<http://www.interactivebrokers.com/php/apiUsersGuide/apiguide.htm#apiguide/c/co
 L<http://www.interactivebrokers.com/php/apiUsersGuide/apiguide.htm#apiguide/c/contractdetails1.htm>,
 L<Protocol::TWS::Struct::Contract>,
 L<Protocol::TWS::Struct::ContractDetails>
-
-=head1 AUTHOR
-
-Uwe Voelker uwe@uwevoelker.de
 
 =cut

@@ -1,14 +1,11 @@
 #!/usr/bin/env perl
 
+# show contract details
+
 use strict;
 use warnings;
 
 use Data::Dumper;
-use FindBin;
-
-use lib "$FindBin::Bin/../../anyevent-tws/lib";
-use lib "$FindBin::Bin/../../protocol-tws/lib";
-use lib "$FindBin::Bin/../lib";
 use Finance::TWS::Simple;
 
 

@@ -1,13 +1,10 @@
 #!/usr/bin/env perl
 
+# request historical quotes
+
 use strict;
 use warnings;
 
-use FindBin;
-
-use lib "$FindBin::Bin/../../anyevent-tws/lib";
-use lib "$FindBin::Bin/../../protocol-tws/lib";
-use lib "$FindBin::Bin/../lib";
 use Finance::TWS::Simple;
 
 

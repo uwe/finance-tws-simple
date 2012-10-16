@@ -1,17 +1,14 @@
 #!/usr/bin/env perl
 
+# export (CSV) 1 minute bars of expiration day (underlying and options)
+
 use strict;
 use warnings;
 
 use DateTime;
-use FindBin;
+use Finance::TWS::Simple;
 use IO::File;
 use Text::CSV;
-
-use lib "$FindBin::Bin/../../anyevent-tws/lib";
-use lib "$FindBin::Bin/../../protocol-tws/lib";
-use lib "$FindBin::Bin/../lib";
-use Finance::TWS::Simple;
 
 
 my $symbol  = shift(@ARGV);
