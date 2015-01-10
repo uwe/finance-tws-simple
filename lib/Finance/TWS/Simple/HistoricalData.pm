@@ -11,7 +11,7 @@ use DateTime;
 sub call {
     my ($class, $tws, $cv, $arg) = @_;
 
-    # Parameter
+    # parameter
     my $contract    = $arg->{contract}    or croak "CONTRACT missing";
     my $duration    = $arg->{duration}    or croak "DURATION missing";
     my $bar_size    = $arg->{bar_size}    or croak "BAR_SIZE missing";
@@ -60,7 +60,7 @@ sub cb {
       exchange    => 'IDEALPRO',
       localSymbol => 'EUR.USD',
   });
-  my $data = $tws->call(ContractDetails => {
+  my $data = $tws->call(HistoricalData => {
       contract    => $contract,
       duration    => '2 W',
       bar_size    => '1 day',
@@ -92,7 +92,7 @@ Return historical quotes (for different time periods).
 
 =head2 contract
 
-L<Protocol::TWS::Simple::Struct::Contract> object.
+L<Protocol::TWS::Struct::Contract> object.
 
 =head2 duration
 
@@ -124,7 +124,7 @@ Defaults to false (meaning only regular trading hours).
 
 =head1 RESULT
 
-Arrayref of L<Protocol::TWS::Simple::Struct::BarData> objects.
+Arrayref of L<Protocol::TWS::Struct::BarData> objects.
 
 =head1 SEE ALSO
 
