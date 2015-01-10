@@ -32,10 +32,6 @@ sub call {
 sub cb {
     my ($self, $response) = @_;
 
-    use Data::Dump qw/pp/;
-
-    pp $response;
-
     $self->{cv}->send($response->price);
 }
 
