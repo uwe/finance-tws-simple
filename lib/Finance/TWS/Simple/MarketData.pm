@@ -23,7 +23,8 @@ sub call {
     );
 
     my $self = bless {
-        cv => $cv,
+        cv   => $cv,
+        data => {},
     }, $class;
 
     $tws->ae_call($self, $request);
@@ -32,7 +33,27 @@ sub call {
 sub cb {
     my ($self, $response) = @_;
 
-    $self->{cv}->send($response->price);
+    if ($response->isa('Protocol::TWS::Response::tickPrice')) {
+        $self->{data}->{$response->field} = $response->price;
+    }
+    elsif ($response->isa('Protocol::TWS::Response::tickSize')) {
+        $self->{data}->{$response->field} = $response->size;
+    }
+    elsif ($response->isa('Protocol::TWS::Response::tickGeneric')) {
+        $self->{data}->{$response->tickType} = $response->value;
+    }
+    elsif ($response->isa('Protocol::TWS::Response::tickString')) {
+        $self->{data}->{$response->tickType} = $response->value;
+    }
+    elsif ($response->isa('Protocol::TWS::Response::tickOptionComputation')) {
+        $self->{data}->{$response->tickType} = $response;
+    }
+    elsif ($response->isa('Protocol::TWS::Response::tickEFP')) {
+        $self->{data}->{$response->tickType} = $response;
+    }
+    elsif ($response->isa('Protocol::TWS::Response::tickSnapshotEnd')) {
+        $self->{cv}->send($self->{data});
+    }
 }
 
 1;

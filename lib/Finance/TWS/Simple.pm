@@ -24,9 +24,9 @@ sub new {
 sub next_id { (shift)->{tws}->next_valid_id }
 
 sub ae_call {
-   my ($self, $object, $request) = @_;
+    my ($self, $object, $request) = @_;
 
-   $self->{tws}->call($request, sub { $object->cb(shift) });
+    $self->{tws}->call($request, sub { $object->cb(shift) });
 }
 
 sub call {
